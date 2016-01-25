@@ -14,13 +14,16 @@ for line in fileinput.input():
     if match:
         groups = match.groupdict()
         params = parse_qs(groups['params'])
-        print '\t'.join( (
-            groups['timestamp'],
-            groups['collection'],
-            params['q'][0],
-            params.get('start', ['0'])[0],
-            params.get('rows', ['\N'])[0],
-            groups['hits'],
-            groups['query_milliseconds'],
+        try:
+            print '\t'.join( (
+                groups['timestamp'],
+                groups['collection'],
+                params.get('q', [''])[0],
+                params.get('start', ['0'])[0],
+                params.get('rows', ['\N'])[0],
+                groups['hits'],
+                groups['query_milliseconds'],
             ) )
-
+        except:
+            print 'offending line: ' + line
+            raise
